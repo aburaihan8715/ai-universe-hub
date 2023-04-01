@@ -8,21 +8,42 @@ const loadTechnologiesData = async () => {
 };
 loadTechnologiesData();
 
-// display tools on ui
+// display details data
+const displayDetailsData = (toolData) => {
+  // console.log(toolData.pricing[0].price);
+  const detailsHeading = document.getElementById("details_heading");
+  detailsHeading.textContent = toolData.description;
+  // plan and pricing
+  const plans=document.querySelectorAll(".plan");
+  const prices=document.querySelectorAll(".price");
+
+  for(let i=0; i<=plans.length-1; i++){
+    plans[i].textContent=toolData.pricing[i].plan;
+    prices[i].textContent=toolData.pricing[i].plan==="Free" || toolData.pricing[i].price==="No cost"? "Free of cost!": toolData.pricing[i].price;
+  }
+
+  // for(let i=0; i<=prices.length-1; i++){
+  //   // console.log(toolData.pricing[i].price);
+  //   prices[i].textContent=toolData.pricing[i].price;
+  // }
+
+  
+};
+
+// show details btn handler
+const showDetailsHandler = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  console.log(data);
+  displayDetailsData(data.data);
+};
+
+// display data on ui
 const displayToolsData = (tools) => {
   tools = tools.slice(0, 6);
-
-  // for (const tool of tools) {
-  //   const features = tool.features;
-  //   for (const feature of features) {
-  //     console.log(feature);
-  //   }
-  // }
-  // console.log(tools[0].features[0]);
-  // console.log(tools.features);
   const toolsContainer = document.getElementById("tools_container");
   tools.forEach((tool) => {
-    console.log(tool);
     const toolsItem = document.createElement("div");
     toolsItem.classList.add("col");
     toolsItem.innerHTML = `
@@ -37,7 +58,6 @@ const displayToolsData = (tools) => {
           </ol>
           <hr />
         </div>
-
         <div class="d-flex justify-content-between">
           <div>
             <h5>${tool.name}</h5>
@@ -46,8 +66,8 @@ const displayToolsData = (tools) => {
               <span>${tool.published_in}</span>
             </div>
           </div>
-          <button type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
-            <i class="bi bi-arrow-right"></i>
+          <button onclick="showDetailsHandler('${tool.id}')" type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
+              <i class="bi bi-arrow-right"></i>
           </button>
         </div>
       </div>
@@ -55,3 +75,5 @@ const displayToolsData = (tools) => {
     toolsContainer.appendChild(toolsItem);
   });
 };
+
+// ============end===========
