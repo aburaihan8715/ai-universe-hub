@@ -10,27 +10,42 @@ loadTechnologiesData();
 
 // display details data
 const displayDetailsData = (toolData) => {
-  // console.log(toolData.pricing[0].price);
+  // heading of details
   const detailsHeading = document.getElementById("details_heading");
   detailsHeading.textContent = toolData.description;
   // plan and pricing
-  const plans=document.querySelectorAll(".plan");
-  const prices=document.querySelectorAll(".price");
+  const plans = document.querySelectorAll(".plan");
+  const prices = document.querySelectorAll(".price");
+  for (let i = 0; i <= plans.length - 1; i++) {
+    plans[i].textContent = toolData.pricing[i].plan;
+    prices[i].textContent =
+      toolData.pricing[i].plan === "Free" || toolData.pricing[i].price === "No cost" ? "Free of cost!" : toolData.pricing[i].price;
+  }
+  // features of details
+  // const featuresItems = document.querySelectorAll(".feature_item");
+  // for(let i=0; i<=featuresItems.length-1; i++){
+  //   featuresItems.textContent="hello";
+  // }
+  // console.log(toolData.features);
 
-  for(let i=0; i<=plans.length-1; i++){
-    plans[i].textContent=toolData.pricing[i].plan;
-    prices[i].textContent=toolData.pricing[i].plan==="Free" || toolData.pricing[i].price==="No cost"? "Free of cost!": toolData.pricing[i].price;
+  // integrations
+  const integrationsItems = document.querySelectorAll(".integrations_item");
+  for (let i = 0; i <= integrationsItems.length - 1; i++) {
+    console.log(toolData.integrations[i]);
+    integrationsItems[i].textContent = toolData.integrations[i];
   }
 
-  // for(let i=0; i<=prices.length-1; i++){
-  //   // console.log(toolData.pricing[i].price);
-  //   prices[i].textContent=toolData.pricing[i].price;
-  // }
+  // image
+  const imageOfDetails = document.getElementById("image_of_details");
+  imageOfDetails.src = toolData.image_link[0];
 
-  
+  // accuracy
+  const accuracyNumber = document.getElementById("accuracy_number");
+  const accuracyBox = document.getElementById("accuracy_box");
+  accuracyNumber.textContent = toolData.accuracy.score ? toolData.accuracy.score : accuracyBox.innerHTML="";
 };
 
-// show details btn handler
+// details btn handler
 const showDetailsHandler = async (id) => {
   const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
   const res = await fetch(url);
@@ -41,7 +56,7 @@ const showDetailsHandler = async (id) => {
 
 // display data on ui
 const displayToolsData = (tools) => {
-  tools = tools.slice(0, 6);
+  // tools = tools.slice(0, 6);
   const toolsContainer = document.getElementById("tools_container");
   tools.forEach((tool) => {
     const toolsItem = document.createElement("div");
