@@ -17,57 +17,66 @@ const displayDetailsData = (toolData) => {
   // heading
   const detailsHeading = document.getElementById("details_heading");
   detailsHeading.textContent = toolData.description;
+
   // plan and pricing
   const plans = document.querySelectorAll(".plan");
   const prices = document.querySelectorAll(".price");
+  const noPricing = document.getElementById("no_pricing");
   for (let i = 0; i <= plans.length - 1; i++) {
+    const pricingBox = document.getElementById("pricing_box");
     if (toolData.pricing === null) {
-      const pricingBox = document.getElementById("pricing_box");
-      pricingBox.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
+      pricingBox.classList.add("d-none");
+      noPricing.classList.remove("d-none");
     } else {
+      pricingBox.classList.remove("d-none");
+      noPricing.classList.add("d-none");
       plans[i].innerText = toolData?.pricing[i]?.plan;
       prices[i].innerText =
-        toolData?.pricing[i]?.plan === "Free" || toolData?.pricing[i]?.price === "No cost" ? "Free of cost!" : toolData.pricing[i].price;
+        toolData?.pricing[i]?.plan === "Free" || toolData?.pricing[i]?.price === "No cost" || toolData?.pricing[i]?.price==='0'? "Free of cost!" : toolData.pricing[i].price;
     }
   }
   // features
-  const featuresItems = document.querySelectorAll(".feature_item");
-  for (let i = 0; i <= featuresItems.length - 1; i++) {
-    featuresItems[i].textContent = toolData.features[i + 1].feature_name;
-  }
+  // const featuresItems = document.querySelectorAll(".feature_item");
+  // for (let i = 0; i <= featuresItems.length - 1; i++) {
+  //   featuresItems[i].textContent = toolData.features[i + 1]?.feature_name;
+  // }
   // console.log(toolData.features[1].feature_name);
 
   // integrations
-  const integrationsItems = document.querySelectorAll(".integrations_item");
-  if (toolData.integrations === null) {
-    const integrationList = document.getElementById("integration_list");
-    integrationList.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
-  } else {
-    for (let i = 0; i <= integrationsItems.length - 1; i++) {
-      // console.log(toolData.integrations[i]);
-      integrationsItems[i].textContent = toolData?.integrations[i] ? toolData.integrations[i] : "Data not found!";
-    }
-  }
+  // const integrationsItems = document.querySelectorAll(".integrations_item");
+  // if (toolData.integrations === null) {
+  //   const integrationList = document.getElementById("integration_list");
+  //   integrationList.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
+  // } else {
+  //   for (let i = 0; i <= integrationsItems.length - 1; i++) {
+  //     // console.log(toolData.integrations[i]);
+  //     integrationsItems[i].textContent = toolData?.integrations[i] ? toolData.integrations[i] : "Data not found!";
+  //   }
+  // }
 
   // image
-  const imageOfDetails = document.getElementById("image_of_details");
-  imageOfDetails.src = toolData.image_link[0];
+  // const imageOfDetails = document.getElementById("image_of_details");
+  // imageOfDetails.src = toolData.image_link[0];
 
   // accuracy
-  const accuracyNumber = document.getElementById("accuracy_number");
-  const accuracyBox = document.getElementById("accuracy_box");
-  accuracyNumber.textContent = toolData?.accuracy?.score ? toolData.accuracy.score : (accuracyBox.innerHTML = "");
+  // const accuracyNumber = document.getElementById("accuracy_number");
+  // const accuracyBox = document.getElementById("accuracy_box");
+  // if (toolData.accuracy.score === null) {
+  //   accuracyBox.textContent= "";
+  // } else {
+  //   accuracyNumber.textContent = toolData.accuracy?.score ? toolData.accuracy.score : (accuracyBox.textContent = "");
+  // }
 
   // questions and answers
-  const question = document.getElementById("question");
-  const answer = document.getElementById("answer");
-  if (toolData.input_output_examples === null) {
-    const questionsAnswers = document.getElementById("questions_answers");
-    questionsAnswers.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
-  } else {
-    question.innerText = toolData.input_output_examples[0].input;
-    answer.innerText = toolData.input_output_examples[0].output;
-  }
+  // const question = document.getElementById("question");
+  // const answer = document.getElementById("answer");
+  // if (toolData.input_output_examples === null) {
+  //   const questionsAnswers = document.getElementById("questions_answers");
+  //   questionsAnswers.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
+  // } else {
+  //   question.textContent = toolData?.input_output_examples[0]?.input;
+  //   answer.textContent = toolData?.input_output_examples[0]?.output;
+  // }
 };
 
 // details btn handler
@@ -83,7 +92,7 @@ const showDetailsHandler = async (id) => {
 const displayToolsData = (tools) => {
   // tools = tools.slice(0, 6);
   const toolsContainer = document.getElementById("tools_container");
-  tools.forEach((tool) => {
+  tools?.forEach((tool) => {
     const toolsItem = document.createElement("div");
     toolsItem.classList.add("col");
     toolsItem.innerHTML = `
