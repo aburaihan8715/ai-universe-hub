@@ -9,7 +9,7 @@ const toggleSpinner = (isLoading) => {
   }
 };
 
-//html template for displaying tools
+// html template for displaying tools data
 const toolsTemplate = (tools) => {
   const toolsContainer = document.getElementById("tools_container");
   tools?.forEach((tool) => {
@@ -46,7 +46,6 @@ const toolsTemplate = (tools) => {
     toolsContainer.appendChild(toolsItem);
   });
 };
-
 // ===========utilities end==========
 
 // load data initially
@@ -64,7 +63,7 @@ const loadTechnologiesData = async () => {
 };
 loadTechnologiesData();
 
-// display details data
+// display details data or modal data
 const displayDetailsData = (toolData) => {
   // heading
   const detailsHeading = document.getElementById("details_heading");
@@ -89,6 +88,7 @@ const displayDetailsData = (toolData) => {
           : toolData.pricing[i].price;
     }
   }
+
   // features
   const featuresItems = document.querySelectorAll(".feature_item");
   for (let i = 0; i <= featuresItems.length - 1; i++) {
@@ -139,7 +139,8 @@ const displayDetailsData = (toolData) => {
     answer.textContent = toolData?.input_output_examples[0]?.output;
   }
 };
-// display all data based on click see more button
+
+// display all data based on see more button click
 const displayAllData = (tools) => {
   const toolsContainer = document.getElementById("tools_container");
   toolsContainer.innerHTML = "";
@@ -155,16 +156,15 @@ seeMoreBtn.addEventListener("click", function () {
     .then((data) => displayAllData(data.data.tools));
 });
 
-// details btn handler
+// see details or modal btn handler
 const showDetailsHandler = async (id) => {
   const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
   const res = await fetch(url);
   const data = await res.json();
-  // console.log(data);
   displayDetailsData(data.data);
 };
 
-// display initial data on ui
+// display initial data
 const displayToolsData = (tools) => {
   const seeMoreBtnBox = document.getElementById("see_more_btn_box");
   if (tools.length > 6) {
@@ -172,11 +172,10 @@ const displayToolsData = (tools) => {
     toolsTemplate(tools);
     // stop loading
     toggleSpinner(false);
-    // display see more button box
+    // display see more button box or see more button
     seeMoreBtnBox.classList.remove("d-none");
   } else {
     seeMoreBtnBox.classList.add("d-none");
   }
 };
-
 // ============end===========
