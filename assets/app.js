@@ -1,10 +1,62 @@
+// ===========utilities start==========
+// loading spinner
+const toggleSpinner = (isLoading) => {
+  const spinnerBox = document.getElementById("spinner_box");
+  if (isLoading) {
+    spinnerBox.classList.remove("d-none");
+  } else {
+    spinnerBox.classList.add("d-none");
+  }
+};
+
+//html template for displaying tools
+const toolsTemplate = (tools) => {
+  const toolsContainer = document.getElementById("tools_container");
+  tools?.forEach((tool) => {
+    const toolsItem = document.createElement("div");
+    toolsItem.classList.add("col");
+    toolsItem.innerHTML = `
+        <div class="card h-100 p-4">
+          <img src=${tool.image} class="card-img-top rounded" alt="technologies" />
+          <div class="card-body">
+            <h5 class="">Features</h5>
+            <ol class="">
+              <li>${tool.features[0] ? tool.features[0] : "Data not found"}</li>
+              <li>${tool.features[1] ? tool.features[1] : "Data not found"}</li>
+              <li>${tool.features[2] ? tool.features[2] : "Data not found"}</li>
+            </ol>
+            <hr />
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5>${tool.name}</h5>
+              <div>
+                <i class="bi bi-calendar2-week"></i>
+                <span>${tool.published_in}</span>
+              </div>
+            </div>
+            <button onclick="showDetailsHandler('${
+              tool.id
+            }')" type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
+                <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    toolsContainer.appendChild(toolsItem);
+  });
+};
+
+// ===========utilities end==========
+
 // load data initially
 const loadTechnologiesData = async () => {
   try {
+    // loading start
+    toggleSpinner(true);
     const res = await fetch("https://openapi.programming-hero.com/api/ai/tools");
     const data = await res.json();
     const tools = data.data.tools;
-    // console.log(tools);
     displayToolsData(tools);
   } catch (error) {
     console.log(error);
@@ -73,16 +125,35 @@ const displayDetailsData = (toolData) => {
   }
 
   // questions and answers
-  // const question = document.getElementById("question");
-  // const answer = document.getElementById("answer");
-  // if (toolData.input_output_examples === null) {
-  //   const questionsAnswers = document.getElementById("questions_answers");
-  //   questionsAnswers.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
-  // } else {
-  //   question.textContent = toolData?.input_output_examples[0]?.input;
-  //   answer.textContent = toolData?.input_output_examples[0]?.output;
-  // }
+  const question = document.getElementById("question");
+  const answer = document.getElementById("answer");
+  const questionsAnswers = document.getElementById("questions_answers");
+  const noQuestionsAnswers = document.getElementById("no_questions_answers");
+  if (toolData.input_output_examples === null) {
+    questionsAnswers.classList.add("d-none");
+    noQuestionsAnswers.classList.remove("d-none");
+  } else {
+    questionsAnswers.classList.remove("d-none");
+    noQuestionsAnswers.classList.add("d-none");
+    question.textContent = toolData?.input_output_examples[0]?.input;
+    answer.textContent = toolData?.input_output_examples[0]?.output;
+  }
 };
+// display all data based on click see more button
+const displayAllData = (tools) => {
+  const toolsContainer = document.getElementById("tools_container");
+  toolsContainer.innerHTML = "";
+  toolsTemplate(tools);
+};
+
+//  see more button click handler
+const seeMoreBtn = document.getElementById("see_more_btn");
+seeMoreBtn.addEventListener("click", function () {
+  const url = `https://openapi.programming-hero.com/api/ai/tools`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayAllData(data.data.tools));
+});
 
 // details btn handler
 const showDetailsHandler = async (id) => {
@@ -93,43 +164,19 @@ const showDetailsHandler = async (id) => {
   displayDetailsData(data.data);
 };
 
-// display data on ui
+// display initial data on ui
 const displayToolsData = (tools) => {
-  // tools = tools.slice(0, 6);
-  const toolsContainer = document.getElementById("tools_container");
-  tools?.forEach((tool) => {
-    const toolsItem = document.createElement("div");
-    toolsItem.classList.add("col");
-    toolsItem.innerHTML = `
-      <div class="card h-100 p-4">
-        <img src=${tool.image} class="card-img-top rounded" alt="technologies" />
-        <div class="card-body">
-          <h5 class="">Features</h5>
-          <ol class="">
-            <li>${tool.features[0] ? tool.features[0] : "Data not found"}</li>
-            <li>${tool.features[1] ? tool.features[1] : "Data not found"}</li>
-            <li>${tool.features[2] ? tool.features[2] : "Data not found"}</li>
-          </ol>
-          <hr />
-        </div>
-        <div class="d-flex justify-content-between">
-          <div>
-            <h5>${tool.name}</h5>
-            <div>
-              <i class="bi bi-calendar2-week"></i>
-              <span>${tool.published_in}</span>
-            </div>
-          </div>
-          <button onclick="showDetailsHandler('${
-            tool.id
-          }')" type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
-              <i class="bi bi-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    `;
-    toolsContainer.appendChild(toolsItem);
-  });
+  const seeMoreBtnBox = document.getElementById("see_more_btn_box");
+  if (tools.length > 6) {
+    tools = tools.slice(0, 6);
+    toolsTemplate(tools);
+    // stop loading
+    toggleSpinner(false);
+    // display see more button box
+    seeMoreBtnBox.classList.remove("d-none");
+  } else {
+    seeMoreBtnBox.classList.add("d-none");
+  }
 };
 
 // ============end===========

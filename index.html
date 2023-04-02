@@ -34,6 +34,14 @@
     <main>
       <!-- technologies start -->
       <div class="container">
+        <!-- loading spinner -->
+        <div id="spinner_box" class="text-center d-none">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+
         <div id="tools_container" class="row row-cols-1 row-cols-md-3 g-4">
           <!-- <div class="col">
             <div class="card h-100 p-4">
@@ -64,8 +72,8 @@
           </div> -->
         </div>
         <!-- see more button start -->
-        <div class="text-center mt-4">
-          <button class="btn btn-danger">See More</button>
+        <div id="see_more_btn_box" class="text-center mt-4 d-none">
+          <button id="see_more_btn" class="btn btn-danger">See More</button>
         </div>
         <!-- see more button end -->
       </div>
@@ -150,9 +158,13 @@
                           </div>
                         </div>
                       </div>
-                      <div id="questions_answers">
-                        <h6 id="question">Hi, how are you doing today?</h6>
-                        <p id="answer">I'm doing well, thank you for asking. How can I assist you today?</p>
+                      <div>
+                        <div id="questions_answers">
+                          <h6 id="question">Hi, how are you doing today?</h6>
+                          <p id="answer">I'm doing well, thank you for asking. How can I assist you today?</p>
+                        </div>
+                        <!-- message for input-output null -->
+                        <p id="no_questions_answers" class="d-none">No! Not Yet! Take a break!!!</p>
                       </div>
                     </div>
                   </div>
