@@ -23,7 +23,7 @@ const displayDetailsData = (toolData) => {
   for (let i = 0; i <= plans.length - 1; i++) {
     if (toolData.pricing === null) {
       const pricingBox = document.getElementById("pricing_box");
-      pricingBox.innerHTML = "<h6>No pricing plan!!</h6>";
+      pricingBox.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
     } else {
       plans[i].innerText = toolData?.pricing[i]?.plan;
       prices[i].innerText =
@@ -39,9 +39,14 @@ const displayDetailsData = (toolData) => {
 
   // integrations
   const integrationsItems = document.querySelectorAll(".integrations_item");
-  for (let i = 0; i <= integrationsItems.length - 1; i++) {
-    // console.log(toolData.integrations[i]);
-    integrationsItems[i].textContent = toolData.integrations[i] ? toolData.integrations[i] : "Data not found!";
+  if (toolData.integrations === null) {
+    const integrationList = document.getElementById("integration_list");
+    integrationList.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
+  } else {
+    for (let i = 0; i <= integrationsItems.length - 1; i++) {
+      // console.log(toolData.integrations[i]);
+      integrationsItems[i].textContent = toolData?.integrations[i] ? toolData.integrations[i] : "Data not found!";
+    }
   }
 
   // image
@@ -56,10 +61,13 @@ const displayDetailsData = (toolData) => {
   // questions and answers
   const question = document.getElementById("question");
   const answer = document.getElementById("answer");
-  // console.log(toolData.input_output_examples[0].input);
-  // console.log(toolData.input_output_examples[0].output);
-  question.innerText = toolData.input_output_examples[0].input;
-  answer.innerText = toolData.input_output_examples[0].output;
+  if (toolData.input_output_examples === null) {
+    const questionsAnswers = document.getElementById("questions_answers");
+    questionsAnswers.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
+  } else {
+    question.innerText = toolData.input_output_examples[0].input;
+    answer.innerText = toolData.input_output_examples[0].output;
+  }
 };
 
 // details btn handler
