@@ -32,40 +32,45 @@ const displayDetailsData = (toolData) => {
       noPricing.classList.add("d-none");
       plans[i].innerText = toolData?.pricing[i]?.plan;
       prices[i].innerText =
-        toolData?.pricing[i]?.plan === "Free" || toolData?.pricing[i]?.price === "No cost" || toolData?.pricing[i]?.price==='0'? "Free of cost!" : toolData.pricing[i].price;
+        toolData?.pricing[i]?.plan === "Free" || toolData?.pricing[i]?.price === "No cost" || toolData?.pricing[i]?.price === "0"
+          ? "Free of cost!"
+          : toolData.pricing[i].price;
     }
   }
   // features
-  // const featuresItems = document.querySelectorAll(".feature_item");
-  // for (let i = 0; i <= featuresItems.length - 1; i++) {
-  //   featuresItems[i].textContent = toolData.features[i + 1]?.feature_name;
-  // }
-  // console.log(toolData.features[1].feature_name);
+  const featuresItems = document.querySelectorAll(".feature_item");
+  for (let i = 0; i <= featuresItems.length - 1; i++) {
+    featuresItems[i].textContent = toolData.features[i + 1]?.feature_name;
+  }
 
   // integrations
-  // const integrationsItems = document.querySelectorAll(".integrations_item");
-  // if (toolData.integrations === null) {
-  //   const integrationList = document.getElementById("integration_list");
-  //   integrationList.innerHTML = `<h6 class="text-danger">Data not found!!</h6>`;
-  // } else {
-  //   for (let i = 0; i <= integrationsItems.length - 1; i++) {
-  //     // console.log(toolData.integrations[i]);
-  //     integrationsItems[i].textContent = toolData?.integrations[i] ? toolData.integrations[i] : "Data not found!";
-  //   }
-  // }
+  const integrationsItems = document.querySelectorAll(".integrations_item");
+  const integrationList = document.getElementById("integration_list");
+  const noIntegration = document.getElementById("no_integration");
+  if (toolData.integrations === null) {
+    integrationList.classList.add("d-none");
+    noIntegration.classList.remove("d-none");
+  } else {
+    noIntegration.classList.add("d-none");
+    integrationList.classList.remove("d-none");
+    for (let i = 0; i <= integrationsItems.length - 1; i++) {
+      integrationsItems[i].textContent = toolData?.integrations[i] ? toolData.integrations[i] : "Data not found!";
+    }
+  }
 
   // image
-  // const imageOfDetails = document.getElementById("image_of_details");
-  // imageOfDetails.src = toolData.image_link[0];
+  const imageOfDetails = document.getElementById("image_of_details");
+  imageOfDetails.src = toolData.image_link[0];
 
   // accuracy
-  // const accuracyNumber = document.getElementById("accuracy_number");
-  // const accuracyBox = document.getElementById("accuracy_box");
-  // if (toolData.accuracy.score === null) {
-  //   accuracyBox.textContent= "";
-  // } else {
-  //   accuracyNumber.textContent = toolData.accuracy?.score ? toolData.accuracy.score : (accuracyBox.textContent = "");
-  // }
+  const accuracyNumber = document.getElementById("accuracy_number");
+  const accuracyBox = document.getElementById("accuracy_box");
+  if (toolData.accuracy.score === null) {
+    accuracyBox.classList.add("d-none");
+  } else {
+    accuracyBox.classList.remove("d-none");
+    accuracyNumber.textContent = toolData.accuracy?.score ? toolData.accuracy.score : (accuracyBox.textContent = "");
+  }
 
   // questions and answers
   // const question = document.getElementById("question");
