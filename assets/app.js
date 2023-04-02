@@ -10,7 +10,7 @@ loadTechnologiesData();
 
 // display details data
 const displayDetailsData = (toolData) => {
-  // heading of details
+  // heading 
   const detailsHeading = document.getElementById("details_heading");
   detailsHeading.textContent = toolData.description;
   // plan and pricing
@@ -43,6 +43,7 @@ const displayDetailsData = (toolData) => {
   const accuracyNumber = document.getElementById("accuracy_number");
   const accuracyBox = document.getElementById("accuracy_box");
   accuracyNumber.textContent = toolData.accuracy.score ? toolData.accuracy.score : accuracyBox.innerHTML="";
+  
 };
 
 // details btn handler
@@ -67,9 +68,9 @@ const displayToolsData = (tools) => {
         <div class="card-body">
           <h5 class="">Features</h5>
           <ol class="">
-            <li>${tool.features[0]}</li>
-            <li>${tool.features[1]}</li>
-            <li>${tool.features[2]}</li>
+            <li>${tool.features[0] ? tool.features[0] : "Data not found"}</li>
+            <li>${tool.features[1] ? tool.features[1] : "Data not found"}</li>
+            <li>${tool.features[2] ? tool.features[2] : "Data not found"}</li>
           </ol>
           <hr />
         </div>
