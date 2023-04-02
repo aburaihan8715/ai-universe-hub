@@ -1,38 +1,47 @@
 // load data initially
 const loadTechnologiesData = async () => {
-  const res = await fetch("https://openapi.programming-hero.com/api/ai/tools");
-  const data = await res.json();
-  const tools = data.data.tools;
-  // console.log(tools);
-  displayToolsData(tools);
+  try {
+    const res = await fetch("https://openapi.programming-hero.com/api/ai/tools");
+    const data = await res.json();
+    const tools = data.data.tools;
+    // console.log(tools);
+    displayToolsData(tools);
+  } catch (error) {
+    console.log(error);
+  }
 };
 loadTechnologiesData();
 
 // display details data
 const displayDetailsData = (toolData) => {
-  // heading 
+  // heading
   const detailsHeading = document.getElementById("details_heading");
   detailsHeading.textContent = toolData.description;
   // plan and pricing
   const plans = document.querySelectorAll(".plan");
   const prices = document.querySelectorAll(".price");
   for (let i = 0; i <= plans.length - 1; i++) {
-    plans[i].textContent = toolData.pricing[i].plan;
-    prices[i].textContent =
-      toolData.pricing[i].plan === "Free" || toolData.pricing[i].price === "No cost" ? "Free of cost!" : toolData.pricing[i].price;
+    if (toolData.pricing === null) {
+      const pricingBox = document.getElementById("pricing_box");
+      pricingBox.innerHTML = "<h6>No pricing plan!!</h6>";
+    } else {
+      plans[i].innerText = toolData?.pricing[i]?.plan;
+      prices[i].innerText =
+        toolData?.pricing[i]?.plan === "Free" || toolData?.pricing[i]?.price === "No cost" ? "Free of cost!" : toolData.pricing[i].price;
+    }
   }
-  // features of details
-  // const featuresItems = document.querySelectorAll(".feature_item");
-  // for(let i=0; i<=featuresItems.length-1; i++){
-  //   featuresItems.textContent="hello";
-  // }
-  // console.log(toolData.features);
+  // features
+  const featuresItems = document.querySelectorAll(".feature_item");
+  for (let i = 0; i <= featuresItems.length - 1; i++) {
+    featuresItems[i].textContent = toolData.features[i + 1].feature_name;
+  }
+  // console.log(toolData.features[1].feature_name);
 
   // integrations
   const integrationsItems = document.querySelectorAll(".integrations_item");
   for (let i = 0; i <= integrationsItems.length - 1; i++) {
-    console.log(toolData.integrations[i]);
-    integrationsItems[i].textContent = toolData.integrations[i];
+    // console.log(toolData.integrations[i]);
+    integrationsItems[i].textContent = toolData.integrations[i] ? toolData.integrations[i] : "Data not found!";
   }
 
   // image
@@ -42,8 +51,15 @@ const displayDetailsData = (toolData) => {
   // accuracy
   const accuracyNumber = document.getElementById("accuracy_number");
   const accuracyBox = document.getElementById("accuracy_box");
-  accuracyNumber.textContent = toolData.accuracy.score ? toolData.accuracy.score : accuracyBox.innerHTML="";
-  
+  accuracyNumber.textContent = toolData?.accuracy?.score ? toolData.accuracy.score : (accuracyBox.innerHTML = "");
+
+  // questions and answers
+  const question = document.getElementById("question");
+  const answer = document.getElementById("answer");
+  // console.log(toolData.input_output_examples[0].input);
+  // console.log(toolData.input_output_examples[0].output);
+  question.innerText = toolData.input_output_examples[0].input;
+  answer.innerText = toolData.input_output_examples[0].output;
 };
 
 // details btn handler
@@ -51,7 +67,7 @@ const showDetailsHandler = async (id) => {
   const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
   displayDetailsData(data.data);
 };
 
@@ -82,7 +98,9 @@ const displayToolsData = (tools) => {
               <span>${tool.published_in}</span>
             </div>
           </div>
-          <button onclick="showDetailsHandler('${tool.id}')" type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
+          <button onclick="showDetailsHandler('${
+            tool.id
+          }')" type="button" class="btn text-danger fs-4" data-bs-toggle="modal" data-bs-target="#technologiesModal">
               <i class="bi bi-arrow-right"></i>
           </button>
         </div>
